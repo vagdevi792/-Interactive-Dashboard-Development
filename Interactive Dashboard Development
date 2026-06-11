@@ -1,0 +1,45 @@
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+
+# Dashboard Title
+st.title("Interactive Sales Dashboard")
+
+# Sample Data
+data = {
+    "Month": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    "Sales": [12000, 15000, 18000, 17000, 22000, 25000],
+    "Customers": [120, 150, 180, 170, 210, 240]
+}
+
+df = pd.DataFrame(data)
+
+# KPI Metrics
+st.subheader("Key Performance Indicators")
+col1, col2 = st.columns(2)
+
+with col1:
+    st.metric("Total Sales", f"₹{df['Sales'].sum():,}")
+
+with col2:
+    st.metric("Total Customers", df["Customers"].sum())
+
+# Sales Trend Chart
+st.subheader("Monthly Sales Trend")
+fig1 = px.line(df, x="Month", y="Sales", markers=True)
+st.plotly_chart(fig1)
+
+# Customer Analysis
+st.subheader("Customer Growth")
+fig2 = px.bar(df, x="Month", y="Customers")
+st.plotly_chart(fig2)
+
+# Data Table
+st.subheader("Sales Data")
+st.dataframe(df)
+
+# Insights
+st.subheader("Insights")
+best_month = df.loc[df["Sales"].idxmax(), "Month"]
+st.write(f"Highest sales were recorded in **{best_month}**.")
+st.write("Sales show a positive growth trend over time.")
